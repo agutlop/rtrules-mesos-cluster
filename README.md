@@ -22,6 +22,11 @@ Es necesario tener instalados los siguientes programas para poder desplegar el c
 
 No es necesario instalar Ansible, pues el aprovisionamiento se lanzará desde los nodos.
 
+Para levantar el cluster será necesario descargar el repositorio https://github.com/agutlop/rtrules-mesos-cluster y, una vez en la ruta del proyecto, lanzar vagrant:
+
+`vagrant up`
+
+
 ## Descripcion del Cluster
 
 El claster crea una red con los siguietnes nodos e IPs:
@@ -38,6 +43,7 @@ El nodo1 hará las funciones de Master para la mayoría de las aplicaciones
 El aprovisionamiento se hará mediante Ansible. Todos los pasos para el aprovisionamiento se pueden consultar en el fichero `playbook.yml`
 El software es el siguiente:
 * **Master (nodo1)**
+  * Ansible
   * Zookeeper
   * Mesos Master y Slave
   * Marathon
@@ -48,6 +54,7 @@ El software es el siguiente:
   * Mesos Kafka (https://github.com/mesos/kafka)
  
 * **Slaves (nodos del 2 al 3)**
+  * Ansible
   * Mesos Slave
   * Scala 2.11.8
   * Spark-2.0.0 para Hadoop 2.6
