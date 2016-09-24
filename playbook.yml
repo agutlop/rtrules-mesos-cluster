@@ -53,7 +53,7 @@
         template: src=./scripts/create_topics.sh dest=/home/vagrant/create_topics.sh mode=0777
       - name: create kafka broker and topics
         become_user: vagrant
-        shell: sh /vagrant/create_topics.sh
+        shell: sh /home/vagrant/create_topics.sh
 - hosts: nodes
   remote_user: vagrant
   become: yes
