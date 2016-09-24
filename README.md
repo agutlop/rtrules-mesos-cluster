@@ -76,8 +76,8 @@ Se puede comprobar el correcto funcionamiento del cluster mediante las interfase
 * Spark Dispatcher: 192.168.33.10:8081
 
 Así mismo, para comprobar que las colas kafka se han creado correctamente, se puede lanzar el siguiente script:
-`$HOME/mesoskafka/kafka-mesos.sh broker list`
-`$HOME/mesoskafka/kafka-mesos.sh topic list`
+* `$HOME/mesoskafka/kafka-mesos.sh broker list`
+* `$HOME/mesoskafka/kafka-mesos.sh topic list`
 
 
 
