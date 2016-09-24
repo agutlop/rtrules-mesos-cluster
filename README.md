@@ -29,7 +29,7 @@ Para levantar el cluster será necesario descargar el repositorio https://github
 
 ## Descripcion del Cluster
 
-El claster crea una red con los siguietnes nodos e IPs:
+El cluster crea una red con los siguietnes nodos e IPs:
 * nodo1: 192.168.33.10
 * nodo2: 192.168.33.11
 * nodo3: 192.168.33.12
