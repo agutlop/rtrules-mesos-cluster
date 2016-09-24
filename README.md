@@ -86,6 +86,10 @@ Así mismo, para comprobar que las colas kafka se han creado correctamente, se p
 * `$HOME/mesoskafka/kafka-mesos.sh broker list`
 * `$HOME/mesoskafka/kafka-mesos.sh topic list`
 
+Para ello, será necesario conectarse mediante ssh al nodo1, pues es el que contiene la instalacion de mesos-kafka:
+
+`vagrant ssh node1`
+
 
 
 
