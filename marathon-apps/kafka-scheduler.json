@@ -18,5 +18,8 @@
       "protocol": "tcp",
       "labels": {}
     }
-  ]
+  ],
+   "env": {
+    "MESOS_NATIVE_JAVA_LIBRARY": "/usr/local/lib/libmesos.so"
+  }
 }
