@@ -1,0 +1,22 @@
+{
+  "id": "/kafka-scheduler",
+  "cmd": "sh /home/vagrant/mesoskafka/kafka-mesos.sh scheduler",
+  "cpus": 0.1,
+  "mem": 32,
+  "disk": 0,
+  "instances": 1,
+  "constraints": [
+    [
+      "hostname",
+      "CLUSTER",
+      "node1"
+    ]
+  ],
+  "portDefinitions": [
+    {
+      "port": 10001,
+      "protocol": "tcp",
+      "labels": {}
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+---
+- hosts: master
+  remote_user: vagrant
+  become: yes
+  become_method: sudo
+  tasks:
+      - name: update hosts file
+        template: src=./config/hosts dest=/etc/hosts
+      - name: install mesosphere yum repo
+        yum: name=http://repos.mesosphere.com/el/7/noarch/RPMS/mesosphere-el-repo-7-1.noarch.rpm state=present
+      - name: install zookeeper yum repo
+        yum: name=http://archive.cloudera.com/cdh4/one-click-install/redhat/6/x86_64/cloudera-cdh-4-0.x86_64.rpm state=present
+      - name: install zookeeper
+        yum: pkg=zookeeper,zookeeper-server state=latest
+      - name: configure zookeeper ID
+        become_user: zookeeper
+        shell: zookeeper-server-initialize --myid=1
+      - name: install mesos, marathon and chronos packages
+        yum: pkg=mesos,marathon,chronos state=latest
+      - name: start zookeeper
+        service: name=zookeeper-server state=started enabled=yes
+      - name: start mesos-master
+        service: name=mesos-master state=started enabled=yes
+      - name: start mesos-slave
+        service: name=mesos-slave state=started enabled=yes
+      - name: start marathon
+        service: name=marathon state=started enabled=yes
+      - name: start chronos
+        service: name=chronos state=started enabled=yes
+      - name: install go, git, and dnsutil packages
+        yum: pkg=golang,git,bind-utils state=latest
+      - name: build/configure mesos-dns
+        become_user: vagrant
+        shell: sh /vagrant/scripts/installdns.sh
+      - name: copy spark script
+        template: src=./scripts/install_spark_centos7.sh dest=/home/vagrant/install_spark_centos7.sh mode=0777
+      - name: install scala and spark
+        become_user: vagrant
+        shell: sh /home/vagrant/install_spark_centos7.sh
+      - name: copy kafka script
+        template: src=./scripts/install-mesos-kafka.sh dest=/home/vagrant/install-mesos-kafka.sh mode=0777
+      - name: install kafka-mesos
+        become_user: vagrant
+        shell: sh /home/vagrant/install-mesos-kafka.sh
+      - name: copy marathon apps script
+        template: src=./scripts/submit-marathon-apps.sh dest=/home/vagrant/submit-marathon-apps.sh mode=0777
+      - name: configure dns(despues de bajar todos los fuentes)
+        template: src=./config/resolv.conf dest=/etc/resolv.conf
+      - name: submitting marathon applications
+        become_user: vagrant
+        shell: sh /home/vagrant/submit-marathon-apps.sh
+      - name: copy kafka broker and topics script
+        template: src=./scripts/create_topics.sh dest=/home/vagrant/create_topics.sh mode=0777
+      - name: create kafka broker and topics
+        become_user: vagrant
+        shell: sh /vagrant/create_topics.sh
+- hosts: nodes
+  remote_user: vagrant
+  become: yes
+  become_method: sudo
+  tasks:
+      - name: update hosts file
+        template: src=./config/hosts dest=/etc/hosts
+      - name: install mesosphere yum repo
+        yum: name=http://repos.mesosphere.com/el/7/noarch/RPMS/mesosphere-el-repo-7-1.noarch.rpm state=present
+      - name: install mesos
+        yum: pkg=mesos state=latest
+      - name: configure dns
+        template: src=./config/resolv.conf dest=/etc/resolv.conf 
+      - name: set zookeeper master
+        replace: dest=/etc/mesos/zk regexp="localhost" replace="192.168.33.10"
+      - name: start mesos-slave
+        service: name=mesos-slave state=started enabled=yes
+      - name: copy spark script
+        template: src=./scripts/install_spark_centos7.sh dest=/home/vagrant/install_spark_centos7.sh
+      - name: install scala and spark
+        become_user: vagrant
+        shell: sh /home/vagrant/install_spark_centos7.sh

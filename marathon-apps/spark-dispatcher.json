@@ -1,0 +1,22 @@
+{
+  "id": "/spark-dispatcher",
+  "cmd": "/home/vagrant/spark-2.0.0-bin-hadoop2.6/bin/spark-class org.apache.spark.deploy.mesos.MesosClusterDispatcher --master \"mesos://192.168.33.10:5050\"",
+  "cpus": 0.2,
+  "mem": 256,
+  "disk": 0,
+  "instances": 1,
+  "constraints": [
+    [
+      "hostname",
+      "CLUSTER",
+      "node1"
+    ]
+  ],
+  "portDefinitions": [
+    {
+      "port": 10002,
+      "protocol": "tcp",
+      "labels": {}
+    }
+  ]
+}
